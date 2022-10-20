@@ -12,11 +12,7 @@ export const createReducer = <S, A>(initialState: S, h? : HandlersT<S, A>) => {
 
         if (handlers.hasOwnProperty(action.type)) {
             const reducer = handlers[action.type];
-            if (typeof reducer !== 'function') {
-                throw Error(
-                    `${action.type} is wrong`
-                );
-            }
+
             return reducer(state, action);
         } else {
             return state;

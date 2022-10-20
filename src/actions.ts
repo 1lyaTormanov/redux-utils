@@ -1,44 +1,46 @@
-import {Action, ActionTypes, Creator, ReducerT, TypeToAction} from "./types";
+import {ActionTypes, TypeToAction} from "./types";
 
 export function createAsyncGroup<R, S, F, C>(group: string, prefix: string){
 
     const renderAction = (variant: ActionTypes) => {
         return `@${group}/${prefix}_'${variant}'`.toUpperCase()
     }
+
+    const wrapCreator = <T>(data: T,type: ActionTypes) => {
+        return {
+            type: renderAction(type),
+            payload: data
+        }
+    }
+
     const result: TypeToAction<R, S ,F, C>  = {
         REQUEST: {
             type: renderAction('REQUEST'),
             creator: (data: R)=> {
-                return {
-                    type: renderAction('REQUEST'),
-                    payload: data
-                }}
+                return wrapCreator(data, 'REQUEST')
+            }
         },
         SUCCESS: {
             type: renderAction('SUCCESS'),
             creator: (data: S)=> {
-                return {
-                    type: renderAction('SUCCESS'),
-                    payload: data
-                }}
+                return wrapCreator(data, 'SUCCESS')}
         },
         FAILURE: {
             type: renderAction('FAILURE'),
             creator: (data: F)=> {
-                return {
-                    type: renderAction('FAILURE'),
-                    payload: data
-                }}
+                return wrapCreator(data, 'FAILURE')}
         },
         CANCELED: {
             type: renderAction('CANCELED'),
             creator: (data: C)=> {
-                return {
-                    type: renderAction('CANCELED'),
-                    payload: data
-                }}
+                return wrapCreator(data, 'CANCELED')
+            }
         }
     };
 
     return result
 }
+
+const creator = createAsyncGroup<string, string, string, null>('user', 'data')
+
+creator.SUCCESS.creator('kek')

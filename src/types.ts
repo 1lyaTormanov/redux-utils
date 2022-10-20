@@ -1,9 +1,4 @@
 
-export type RequestT = 'REQUEST'
-export type SuccessT = 'SUCCESS'
-export type FailureT = 'FAILURE'
-export type CanceledT = 'CANCELED'
-
 export type ActionTypes = 'REQUEST' | 'SUCCESS' | 'FAILURE' | 'CANCELED'
 
 export interface Creator<T>{
